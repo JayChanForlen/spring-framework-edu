@@ -1,4 +1,5 @@
 apply plugin: "propdeps-maven"
+//apply plugin: "cn.bestwu.propdeps-maven"
 
 install {
 	repositories.mavenInstaller {
