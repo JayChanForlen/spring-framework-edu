@@ -1,5 +1,10 @@
 package com.stu.context;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 /**
  * @ClassName: MyClassPathApplicationContext
  * @Author: JayChan
@@ -7,5 +12,19 @@ package com.stu.context;
  * @Description: No description
  */
 
-public class MyClassPathApplicationContext {
+public class MyClassPathApplicationContext extends ClassPathXmlApplicationContext {
+
+	protected final Log logger = LogFactory.getLog(getClass());
+
+	@Override
+	protected void initPropertySources() {
+		logger.info("自定义扩展initPropertySources");
+		getEnvironment().setRequiredProperties("aaa");
+	}
+
+	@Override
+	protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
+		super.setAllowBeanDefinitionOverriding(true);
+		super.setAllowCircularReferences(true);
+	}
 }

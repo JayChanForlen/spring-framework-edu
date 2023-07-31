@@ -224,6 +224,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Create a new AbstractApplicationContext with no parent.
 	 */
 	public AbstractApplicationContext() {
+		//创建资源模式处理器 PathMatchingResourcePatternResolver（路径匹配资源模式处理器）
+		//其实就是之后会使用的，用来解析XML文件的
 		this.resourcePatternResolver = getResourcePatternResolver();
 	}
 
@@ -517,12 +519,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			//前戏：做好容器刷新前的准备
+			//1、设置容器的启动时间
+			//2、设置容器活跃状态为T，关闭状态为F
+			//3、获取Environment对象，并加载当前系统的属性值到该对象中
+			//4、准备监听器和事件的集合对象，默认为空的集合
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			//创建容器对象，DefaultListableBeanFactory
+			//加载XML配置文件的属性值到当前的BeanFactory中去（就是这一步分解了BeanDefinition）
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			//beanFactory的准备工作，主要涉及到beanFactory各种属性的填充
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -630,6 +640,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		//刷新创建beanFactory，解析XML中的BeanDefinition给到beanFactory
 		refreshBeanFactory();
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {
