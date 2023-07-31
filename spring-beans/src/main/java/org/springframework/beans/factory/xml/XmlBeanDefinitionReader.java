@@ -316,7 +316,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		if (logger.isInfoEnabled()) {
 			logger.info("Loading XML bean definitions from " + encodedResource);
 		}
-
+//		利用ThreadLocal来处理并行问题，	TODO
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 		if (currentResources == null) {
 			currentResources = new HashSet<>(4);

@@ -129,6 +129,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		BeanDefinitionParserDelegate parent = this.delegate;
 		this.delegate = createDelegate(getReaderContext(), root, parent);
 
+		//profile 在 Spring IOC（Inversion of Control）容器中，profile 是一种用于定义不同环境下的配置集合的机制。
 		if (this.delegate.isDefaultNamespace(root)) {
 			String profileSpec = root.getAttribute(PROFILE_ATTRIBUTE);
 			if (StringUtils.hasText(profileSpec)) {
@@ -175,6 +176,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 						parseDefaultElement(ele, delegate);
 					}
 					else {
+						//delegate.isDefaultNamespace(ele)是用来判断是否是"http://www.springframework.org/schema/beans"中的类型的
+						// 这里我们可以自定义类型用来解析我们的BeanDefinition
 						delegate.parseCustomElement(ele);
 					}
 				}

@@ -51,6 +51,9 @@ import org.springframework.util.Assert;
  */
 public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContext {
 
+	/**
+	 * 与其父类中的configLocaling是同样的作用，此参数对应的是Resource对象。
+	 */
 	@Nullable
 	private Resource[] configResources;
 

@@ -801,6 +801,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
 		if (existingDefinition != null) {
+			//这里判断是否可以进行BeanDefinition的覆盖
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
 						"Cannot register bean definition [" + beanDefinition + "] for bean '" + beanName +

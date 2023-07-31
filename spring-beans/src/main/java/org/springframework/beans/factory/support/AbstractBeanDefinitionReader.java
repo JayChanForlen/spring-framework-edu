@@ -203,6 +203,7 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 	 * @param actualResources a Set to be filled with the actual Resource objects
 	 * that have been resolved during the loading process. May be {@code null}
 	 * to indicate that the caller is not interested in those Resource objects.
+	 * translate:在加载过程中已解析的实际资源对象填充的集合。可能是null，来表示调用者对这些资源对象不感兴趣。
 	 * @return the number of bean definitions found
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 * @see #getResourceLoader()
@@ -210,16 +211,21 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 	 * @see #loadBeanDefinitions(org.springframework.core.io.Resource[])
 	 */
 	public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualResources) throws BeanDefinitionStoreException {
+		//已经设置过.就是ClassPathXMLApplicationContext
 		ResourceLoader resourceLoader = getResourceLoader();
 		if (resourceLoader == null) {
 			throw new BeanDefinitionStoreException(
 					"Cannot import bean definitions from location [" + location + "]: no ResourceLoader available");
 		}
 
+		//ClassPathXMLApplicationContext属于ResourcePatternResolver类型
+		// 这个判断的意思是，只要这个资源处理器属于位置模式（就是传进来路径的这种模式）就使用下面的方式
 		if (resourceLoader instanceof ResourcePatternResolver) {
 			// Resource pattern matching available.
 			try {
+				//这个source就是我们使用的路径（eg：applicationContext.xml）
 				Resource[] resources = ((ResourcePatternResolver) resourceLoader).getResources(location);
+				//获取到这些路径后开始解析
 				int loadCount = loadBeanDefinitions(resources);
 				if (actualResources != null) {
 					for (Resource resource : resources) {

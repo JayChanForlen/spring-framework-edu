@@ -90,6 +90,9 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		// resource loading environment.
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
 		//适配器模式
+		/**
+		 * @see org.springframework.beans.factory.support.AbstractBeanDefinitionReader#loadBeanDefinitions(String, java.util.Set)
+		 */
 		beanDefinitionReader.setResourceLoader(this);
 		//加载配置文件的格式（dtd，xsd）
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
@@ -126,6 +129,9 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	 * @see #getConfigLocations
 	 * @see #getResources
 	 * @see #getResourcePatternResolver
+	 * 
+	 * MySee:
+	 * @see ClassPathXmlApplicationContext#setConfigLocations(String...) 
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
 		Resource[] configResources = getConfigResources();
@@ -133,6 +139,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 			reader.loadBeanDefinitions(configResources);
 		}
 		String[] configLocations = getConfigLocations();
+		//在ClassPathXMLApplicationContext中的configLocations参数就是我们之前解析好的配置文件路径
 		if (configLocations != null) {
 			reader.loadBeanDefinitions(configLocations);
 		}
