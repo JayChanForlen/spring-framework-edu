@@ -537,6 +537,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				//用于子类的扩展，总的来说这个里面是对BeanFactory的后置处理，一般有两个用处
+				//1、注册动态的自定义BeanDefinition
+				//2、修改beanFactory属性值
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
@@ -714,10 +717,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		//BeanFactoryPostProcessors的执行
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+		//这里涉及到了一个LoadTimeWeaver 的一个概念，这个概念是用来编制类的，看起来和aop很像，但是不一样，他是通过自定义的类信息和类加载器完成一个类的编制
+		//专业一点来说，它是用于在类加载的过程之中对类的字节码进行增强的接口
+		/**
+		 * @see org.springframework.instrument.classloading.LoadTimeWeaver
+		 */
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));

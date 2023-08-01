@@ -7,5 +7,7 @@
 		<property name="name" value="Jay" />
 		<property name="description" value="byXML" />
     </bean>
-    <bean class="com.stu.postprocess.MyBeanFactoryPostProcess" ></bean>
+    <bean class="com.stu.postprocess.MyBeanFactoryPostProcess" />
+	<bean class="com.stu.postprocess.MyBeanPostProcessors" />
+	<bean class="com.stu.postprocess.MyBeanDefinitionRegistryPostProcess" />
 </beans>

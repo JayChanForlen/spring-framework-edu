@@ -25,6 +25,9 @@ import java.lang.instrument.ClassFileTransformer;
  * <p>Implementations may operate on the current context {@code ClassLoader}
  * or expose their own instrumentable {@code ClassLoader}.
  *
+ * <p>JDK 的 AOP 使用接口代理，动态生成实现了接口的代理类。
+ * CGLIB 使用继承代理，动态生成目标类的子类。
+ * LoadTimeWeaver 是用于在类加载时修改类的字节码，通常与 AspectJ 框架一起使用，实现类加载时织入的 AOP 功能。
  * @author Rod Johnson
  * @author Costin Leau
  * @since 2.0

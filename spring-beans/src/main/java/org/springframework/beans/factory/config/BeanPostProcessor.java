@@ -39,6 +39,10 @@ import org.springframework.lang.Nullable;
  * @see DestructionAwareBeanPostProcessor
  * @see ConfigurableBeanFactory#addBeanPostProcessor
  * @see BeanFactoryPostProcessor
+ *
+ * 请注意，BeanPostProcessor 中的方法对所有 Bean 都生效。
+ * 如果您只想对特定的 Bean 进行处理，可以在 postProcessBeforeInitialization
+ * 或 postProcessAfterInitialization 方法中添加条件判断，仅处理特定的 Bean。
  */
 public interface BeanPostProcessor {
 
