@@ -12,12 +12,28 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 
 public class MyBeanPostProcessors implements BeanPostProcessor {
 
+	/**
+	 * 在 Bean 的初始化之前调用。你可以在这里对 Bean 进行自定义处理，比如修改 Bean 的属性值、验证 Bean 的状态等。
+	 *
+	 * @param bean the new bean instance
+	 * @param beanName the name of the bean
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		System.out.println(beanName + "：BeanDefinition的前置处理~");
 		return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
 	}
 
+	/**
+	 * 在 Bean 的初始化之后调用。你可以在这里对 Bean 进行额外的处理，比如执行一些初始化操作、代理 Bean 等。
+	 *
+	 * @param bean the new bean instance
+	 * @param beanName the name of the bean
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		System.out.println(beanName + "：BeanDefinition的后置处理~");

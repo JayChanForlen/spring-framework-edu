@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="person1" class="com.stu.dto.Person">
-		<property name="id" value="763402261" />
-		<property name="name" value="Jay" />
-		<property name="description" value="byXML" />
-    </bean>
-    <bean class="com.stu.postprocess.MyBeanFactoryPostProcess" />
-	<bean class="com.stu.postprocess.MyBeanPostProcessors" />
-	<bean class="com.stu.postprocess.MyBeanDefinitionRegistryPostProcess" />
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="person1" class="com.stu.dto.Person">
+		<property name="id" value="763402261"/>
+		<property name="name" value="Jay"/>
+		<property name="description" value="byXML"/>
+	</bean>
+	<bean id="operate" class="com.stu.service.OperateService">
+		<property name="person" ref="person1"/>
+		<property name="operation" value="watching"/>
+	</bean>
+	<bean class="com.stu.postprocess.MyBeanFactoryPostProcess"/>
+	<bean class="com.stu.postprocess.MyBeanPostProcessors"/>
+	<bean class="com.stu.postprocess.MyBeanDefinitionRegistryPostProcess"/>
+	<bean class="com.stu.aware.MyAware" />
 </beans>

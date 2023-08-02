@@ -181,6 +181,23 @@ final class PostProcessorRegistrationDelegate {
 		beanFactory.clearMetadataCache();
 	}
 
+	/**
+	 * 用于BeanPostProcess的注册及排序，以下是相关的排序及后稚气的作用
+	 * <li>1、{@link ApplicationContextAwareProcessor} 在beanFactory进行准备阶段添加的后置处理器，在容器初始化阶段，
+	 * 检测所有实现了 ApplicationContextAware 接口的 Bean，并将 Spring 应用程序上下文的引用设置给它们。
+	 * <li>2、{@link BeanPostProcessorChecker} 确保 BeanPostProcessor 的实例不为空，且所有注册的 BeanPostProcessor 都是唯一的。
+	 * BeanPostProcessorChecker 会对 BeanPostProcessor 实例进行去重和校验，以确保每个 BeanPostProcessor 只注册一次，并且没有重复的实例。
+	 * <li>3、{@link org.springframework.beans.factory.config.BeanPostProcessor} 自定义实现了BeanPostProcessor的后置处理器，具体作用由用户自定义处理
+	 * <li>4、{@link MergedBeanDefinitionPostProcessor} 自定义实现了MergedBeanDefinitionPostProcessor的后置处理器，常用于处理特殊Bean时对BeanDefinition的合并
+	 * <li>5、{@link ApplicationListenerDetector} 在beanFactory进行准备阶段添加的后置处理器，
+	 * 用于检测并处理实现了 ApplicationListener 接口的监听器，并将它们注册到容器的事件监听器列表中。
+	 * 它是在容器启动过程中自动运行的，确保监听器在应用程序事件触发时能够正确地被调用。
+	 * 将 ApplicationListenerDetector 放在 BeanPostProcessor 列表的最后一位是为了确保在容器启动时所有的普通后置处理器都已经完成初始化，
+	 * 以便正确注册监听器并保证监听器的执行顺序。
+	 *
+	 * @param beanFactory
+	 * @param applicationContext
+	 */
 	public static void registerBeanPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
 
