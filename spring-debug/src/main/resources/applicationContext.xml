@@ -15,4 +15,6 @@
 	<bean class="com.stu.postprocess.MyBeanPostProcessors"/>
 	<bean class="com.stu.postprocess.MyBeanDefinitionRegistryPostProcess"/>
 	<bean class="com.stu.aware.MyAware" />
+	<bean class="com.stu.event.CustomEventListener" />
+
 </beans>

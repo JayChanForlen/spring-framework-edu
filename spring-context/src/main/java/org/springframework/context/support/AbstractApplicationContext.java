@@ -547,18 +547,27 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				//注册BeanPostProcessors以供初始化的时候调用
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				//MessageSource国际化配置
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				//初始化多播器实体
+				//如果有自定义的多播器实体则使用自订的
+				//否则使用默认的SimpleApplicationEventMulticaster
+				//多播器是IOC容器实现事件监听的核心内容，其内部维系一个“事件-监听”的映射，当事件进行发布的时候，从多播器中查询到对其感兴趣的监听器，将监听器中的onApplicationContext进行执行
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				//用来由子类进行自订的扩充，一般是初始化其他的特殊类
 				onRefresh();
 
 				// Check for listener beans and register them.
+				//将相关的监听器进行注册，注册在上面实例化的多播器中，但是这里只是进行了多播器的注册，并没有将相关的映射建立
+				//另外这里还可以执行相关的早期事件监听，早期事件和监听是在prepareRefresh时填充的，默认这部分是空的，但是我们可以继承以重写相关方法
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
@@ -784,6 +793,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void initApplicationEventMulticaster() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		//自定义的多播器
 		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
 			this.applicationEventMulticaster =
 					beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
@@ -791,6 +801,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				logger.debug("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
 			}
 		}
+		//默认的多播器
 		else {
 			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
@@ -858,6 +869,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Publish early application events now that we finally have a multicaster...
+		//早期事件监听的执行
 		Set<ApplicationEvent> earlyEventsToProcess = this.earlyApplicationEvents;
 		this.earlyApplicationEvents = null;
 		if (earlyEventsToProcess != null) {
@@ -918,6 +930,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		getLifecycleProcessor().onRefresh();
 
 		// Publish the final event.
+		//这里开始进行事件和监听器的映射建立
 		publishEvent(new ContextRefreshedEvent(this));
 
 		// Participate in LiveBeansView MBean, if active.
