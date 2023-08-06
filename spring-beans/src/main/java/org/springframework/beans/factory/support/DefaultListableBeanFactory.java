@@ -732,6 +732,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		// Trigger initialization of all non-lazy singleton beans...
 		for (String beanName : beanNames) {
+			// 这一部分主要是用来进行类的定义的确认，需要合并就进行合并，不需要就直接转化形态拿出来
+			// 从现象上来看，spring中类的合并其实就是java中的继承，
+			// 但是从实现原理上来说，spring更注重类的定义，他的定义是可以更改的，
+			// 而java中更注重类，从java编译那一刻开始，类的定义就已经确定了，不存在修改了
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				if (isFactoryBean(beanName)) {

@@ -894,8 +894,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Register a default embedded value resolver if no bean post-processor
 		// (such as a PropertyPlaceholderConfigurer bean) registered any before:
 		// at this point, primarily for resolution in annotation attribute values.
+		// Embedded Value Resolver（嵌入式值解析器）是一种用于解析字符串中的占位符的机制。占位符可以是 ${...} 或者 #{...} 格式的表达式，
+		// 它们可以引用属性值、系统属性、环境变量等。
+		// 当 Spring 遇到带有占位符的字符串时，它会使用嵌入式值解析器来解析这些占位符，并将其替换为实际的值。这个过程发生在属性值解析之前，
+		// 在 Bean 的实例化和初始化之前。
 		if (!beanFactory.hasEmbeddedValueResolver()) {
-			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
+			beanFactory.addEmbeddedValueResolver(
+					strVal ->
+							getEnvironment().resolvePlaceholders(strVal)
+			);
 		}
 
 		// Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
@@ -908,6 +915,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.setTempClassLoader(null);
 
 		// Allow for caching all bean definition metadata, not expecting further changes.
+		//BeanFactory 在实例化非懒加载单例 Bean 时需要进行配置冻结，以确保配置的一致性和稳定性。这并不意味着 BeanFactory 是单线程容器，
+		// 它本身是可以被多个线程访问的，但在合适的时机会对配置进行冻结，保证在初始化过程中的线程安全性。
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.

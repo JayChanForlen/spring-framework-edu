@@ -16,5 +16,6 @@
 	<bean class="com.stu.postprocess.MyBeanDefinitionRegistryPostProcess"/>
 	<bean class="com.stu.aware.MyAware" />
 	<bean class="com.stu.event.CustomEventListener" />
+<!--	<bean class="com.stu.conversion.MyConversionService" />-->
 
 </beans>
